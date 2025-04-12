@@ -1,16 +1,78 @@
-<!DOCTYPE html>
-<html>
-<head>
-    <title>YouTube Metrics Tracker</title>
-</head>
-<body>
-    <h1>Welcome to YouTube Metrics Tracker</h1>
-    <p>Available Endpoints:</p>
-    <ul>
-        <li>GET /api/videos - List tracked videos</li>
-        <li>POST /api/videos - Add new video</li>
-        <li>GET /api/videos/{id}/stats - Get video statistics</li>
-        <li>GET /dashboard - View graphical dashboard</li>
-    </ul>
-</body>
-</html>
+{% extends 'base.html' %}
+
+{% block title %}YouTube Metrics Tracker{% endblock %}
+
+{% block content %}
+<div class="p-5 mb-4 bg-light rounded-3">
+    <div class="container-fluid py-5">
+        <h1 class="display-5 fw-bold">YouTube Metrics Tracker</h1>
+        <p class="col-md-8 fs-4">Track and analyze YouTube video metrics over time. Add videos to monitor their performance.</p>
+        <a href="/dashboard" class="btn btn-primary btn-lg">View Dashboard</a>
+        <a href="/admin" class="btn btn-outline-secondary btn-lg">Admin Panel</a>
+    </div>
+</div>
+
+<div class="row">
+    <div class="col-md-4">
+        <div class="card">
+            <div class="card-body">
+                <h5 class="card-title">Track Videos</h5>
+                <p class="card-text">Add YouTube videos to track their performance metrics over time.</p>
+                <a href="/admin/add" class="btn btn-primary">Add Video</a>
+            </div>
+        </div>
+    </div>
+    <div class="col-md-4">
+        <div class="card">
+            <div class="card-body">
+                <h5 class="card-title">View Analytics</h5>
+                <p class="card-text">See detailed charts and statistics for your tracked videos.</p>
+                <a href="/dashboard" class="btn btn-primary">Dashboard</a>
+            </div>
+        </div>
+    </div>
+    <div class="col-md-4">
+        <div class="card">
+            <div class="card-body">
+                <h5 class="card-title">API Access</h5>
+                <p class="card-text">Access your video data programmatically through our API.</p>
+                <a href="#" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#apiModal">API Docs</a>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- API Documentation Modal -->
+<div class="modal fade" id="apiModal" tabindex="-1">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title">API Documentation</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <h6>Available Endpoints:</h6>
+                <div class="mb-3">
+                    <code>GET /api/videos</code>
+                    <p>List all tracked videos with pagination</p>
+                    <p><strong>Parameters:</strong> page (default: 1), per_page (default: 10)</p>
+                </div>
+                <div class="mb-3">
+                    <code>POST /api/videos</code>
+                    <p>Add a new video to track</p>
+                    <p><strong>Body:</strong> {"video_id": "YouTube_Video_ID"}</p>
+                </div>
+                <div class="mb-3">
+                    <code>GET /api/videos/{video_id}/stats</code>
+                    <p>Get statistics for a specific video</p>
+                    <p><strong>Parameters:</strong> start_date (optional), end_date (optional)</p>
+                </div>
+                <div class="mb-3">
+                    <code>DELETE /api/videos/{video_id}</code>
+                    <p>Stop tracking a video and delete its data</p>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

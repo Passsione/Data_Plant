@@ -1,0 +1,59 @@
+{% extends 'base.html' %}
+
+{% block title %}Add Video - YouTube Metrics Tracker{% endblock %}
+
+{% block content %}
+<div class="row">
+    <div class="col-md-8 offset-md-2">
+        <div class="card">
+            <div class="card-header bg-primary text-white">
+                <h5 class="mb-0">Add New YouTube Video</h5>
+            </div>
+            <div class="card-body">
+                <form method="post" action="/admin/add">
+                    <div class="mb-3">
+                        <label for="video_id" class="form-label">YouTube Video ID</label>
+                        <div class="input-group">
+                            <span class="input-group-text">https://youtube.com/watch?v=</span>
+                            <input type="text" class="form-control" id="video_id" name="video_id" required>
+                        </div>
+                        <div class="form-text">Enter the video ID from the YouTube URL. For example, if the URL is https://www.youtube.com/watch?v=dQw4w9WgXcQ, the ID is dQw4w9WgXcQ.</div>
+                    </div>
+                    
+                    <div class="mb-3">
+                        <div id="video_preview" class="d-none">
+                            <label class="form-label">Video Preview</label>
+                            <div class="ratio ratio-16x9 mb-3">
+                                <iframe id="preview_frame" src="" allowfullscreen></iframe>
+
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="d-flex justify-content-between">
+                        <a href="/admin" class="btn btn-secondary">Cancel</a>
+                        <button type="submit" class="btn btn-primary">Add Video</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}
+
+{% block scripts %}
+<script>
+    document.getElementById('video_id').addEventListener('input', function(e) {
+        const videoId = e.target.value.trim();
+        const previewDiv = document.getElementById('video_preview');
+        const previewFrame = document.getElementById('preview_frame');
+        
+        if (videoId.length >= 11) {
+            previewFrame.src = `https://www.youtube.com/embed/${videoId}`;
+            previewDiv.classList.remove('d-none');
+        } else {
+            previewDiv.classList.add('d-none');
+        }
+    });
+</script>
+{% endblock %}

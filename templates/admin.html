@@ -1,0 +1,75 @@
+{% extends 'base.html' %}
+
+{% block title %}Admin - YouTube Metrics Tracker{% endblock %}
+
+{% block content %}
+<div class="d-flex justify-content-between align-items-center mb-4">
+    <h1>Admin Dashboard</h1>
+    <a href="/admin/add" class="btn btn-primary">Add New Video</a>
+</div>
+
+{% if videos %}
+<div class="table-responsive">
+    <table class="table table-striped table-hover">
+        <thead class="table-dark">
+            <tr>
+                <th>Thumbnail</th>
+                <th>Title</th>
+                <th>Channel</th>
+                <th>Published</th>
+                <th>Stats Count</th>
+                <th>Actions</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for video in videos %}
+            <tr>
+                <td>
+                    <img src="{{ video.thumbnail }}" alt="{{ video.title }}" width="120" class="img-thumbnail">
+                </td>
+                <td>
+                    <a href="/dashboard/{{ video.id }}" class="text-decoration-none">{{ video.title }}</a>
+                    <small class="d-block text-muted">{{ video.id }}</small>
+                </td>
+                <td>{{ video.channel_title }}</td>
+                <td>{{ video.published.strftime('%Y-%m-%d') if video.published else 'Unknown' }}</td>
+                <td>{{ video.stats.count() }}</td>
+                <td>
+                    <div class="btn-group">
+                        <a href="/dashboard/{{ video.id }}" class="btn btn-sm btn-info">View</a>
+                        <button type="button" class="btn btn-sm btn-danger" data-bs-toggle="modal" data-bs-target="#deleteModal{{ video.id }}">Delete</button>
+                    </div>
+                    
+                    <!-- Delete Modal -->
+                    <div class="modal fade" id="deleteModal{{ video.id }}" tabindex="-1">
+                        <div class="modal-dialog">
+                            <div class="modal-content">
+                                <div class="modal-header">
+                                    <h5 class="modal-title">Confirm Deletion</h5>
+                                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                                </div>
+                                <div class="modal-body">
+                                    <p>Are you sure you want to delete "{{ video.title }}"?</p>
+                                    <p class="text-danger">This will permanently remove all tracking data for this video.</p>
+                                </div>
+                                <div class="modal-footer">
+                                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
+                                    <form action="/admin/delete/{{ video.id }}" method="post">
+                                        <button type="submit" class="btn btn-danger">Delete</button>
+                                    </form>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+</div>
+{% else %}
+<div class="alert alert-info">
+    <p>No videos have been added yet. <a href="/admin/add">Add your first video</a> to start tracking!</p>
+</div>
+{% endif %}
+{% endblock %}

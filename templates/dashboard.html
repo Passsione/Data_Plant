@@ -1,0 +1,62 @@
+{% extends 'base.html' %}
+
+{% block title %}Dashboard - YouTube Metrics Tracker{% endblock %}
+
+{% block content %}
+<h1 class="mb-4">Video Dashboard</h1>
+
+{% if videos %}
+<div class="row row-cols-1 row-cols-md-2 row-cols-lg-3 g-4">
+    {% for video in videos %}
+    <div class="col">
+        <div class="card h-100 video-card">
+            <img src="{{ video.thumbnail }}" class="card-img-top" alt="{{ video.title }}">
+            <div class="card-body">
+                <h5 class="card-title">{{ video.title }}</h5>
+                <p class="card-text text-muted">{{ video.channel_title }}</p>
+                
+                {% set latest_stats = video.stats.order_by(VideoStats.timestamp.desc()).first() %}
+                {% if latest_stats %}
+                <div class="row g-2 mt-3">
+                    <div class="col-6">
+                        <div class="border rounded p-2 text-center">
+                            <small class="text-muted">Views</small>
+                            <h6 class="mb-0">{{ "{:,}".format(latest_stats.views) }}</h6>
+                        </div>
+                    </div>
+                    <div class="col-6">
+                        <div class="border rounded p-2 text-center">
+                            <small class="text-muted">Likes</small>
+                            <h6 class="mb-0">{{ "{:,}".format(latest_stats.likes) }}</h6>
+                        </div>
+                    </div>
+                    <div class="col-6">
+                        <div class="border rounded p-2 text-center">
+                            <small class="text-muted">Comments</small>
+                            <h6 class="mb-0">{{ "{:,}".format(latest_stats.comments) }}</h6>
+                        </div>
+                    </div>
+                    <div class="col-6">
+                        <div class="border rounded p-2 text-center">
+                            <small class="text-muted">Last Updated</small>
+                            <h6 class="mb-0">{{ latest_stats.timestamp.strftime('%m/%d/%y') }}</h6>
+                        </div>
+                    </div>
+                </div>
+                {% else %}
+                <p class="text-muted">No statistics available yet</p>
+                {% endif %}
+            </div>
+            <div class="card-footer">
+                <a href="/dashboard/{{ video.id }}" class="btn btn-primary w-100">View Detailed Stats</a>
+            </div>
+        </div>
+    </div>
+    {% endfor %}
+</div>
+{% else %}
+<div class="alert alert-info">
+    <p>No videos have been added yet. <a href="/admin/add">Add your first video</a> to start tracking!</p>
+</div>
+{% endif %}
+{% endblock %}
