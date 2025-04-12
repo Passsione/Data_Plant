@@ -1,0 +1,6 @@
+flask
+flask-sqlalchemy
+flask-migrate
+python-dotenv
+apscheduler  # For scheduled updates
+requests    # For YouTube API calls
