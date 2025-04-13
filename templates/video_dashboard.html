@@ -32,7 +32,7 @@
             </div>
         </div>
         <div class="col-md-6">
-            {% set latest_stats = video.stats.order_by(VideoStats.timestamp.desc()).first() %}
+            {% set latest_stats = stats[0] %}
             {% if latest_stats %}
             <div class="card">
                 <div class="card-header bg-primary text-white">

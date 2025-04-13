@@ -3,7 +3,7 @@ import requests
 from datetime import datetime, timedelta
 import isodate  # type: ignore # For parsing YouTube duration format
 from models import Video, VideoStats
-from app import db
+from extensions import db
 
 # Get YouTube API key from environment variables
 API_KEY = os.environ.get('YOUTUBE_API_KEY')

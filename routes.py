@@ -1,7 +1,7 @@
 from flask import render_template, request, jsonify, redirect, url_for, flash
 from datetime import datetime
-from models import Video, VideoStats
-from app import db
+from models import *
+from extensions import db
 from youtube_api import fetch_video_details, get_video_stats
 
 def register_routes(app):
@@ -79,12 +79,17 @@ def register_routes(app):
     @app.route('/dashboard')
     def dashboard():
         videos = Video.query.all()
-        return render_template('dashboard.html', videos=videos)
+        latest_stats = []
+        for video in videos:
+            video_stats = video.stats.order_by(VideoStats.timestamp.desc()).first()
+            latest_stats.append(video_stats)
+        
+        return render_template('dashboard.html', videos=videos, stats=latest_stats)
     
     @app.route('/dashboard/<video_id>')
     def video_dashboard(video_id):
         video = Video.query.get_or_404(video_id)
-        stats = video.stats.order_by(VideoStats.timestamp.asc()).all()
+        stats = video.stats.order_by(VideoStats.timestamp.desc()).all()
         return render_template('video_dashboard.html', video=video, stats=stats)
     
     # API Routes

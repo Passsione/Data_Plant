@@ -1,8 +1,6 @@
 from datetime import datetime
 from flask_sqlalchemy import SQLAlchemy
-
-# This will be initialized in app.py
-from app import db
+from extensions import db
 
 
 class Video(db.Model):

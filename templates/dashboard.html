@@ -15,25 +15,25 @@
                 <h5 class="card-title">{{ video.title }}</h5>
                 <p class="card-text text-muted">{{ video.channel_title }}</p>
                 
-                {% set latest_stats = video.stats.order_by(VideoStats.timestamp.desc()).first() %}
+                {% set latest_stats = stats[0] %}
                 {% if latest_stats %}
                 <div class="row g-2 mt-3">
                     <div class="col-6">
                         <div class="border rounded p-2 text-center">
                             <small class="text-muted">Views</small>
-                            <h6 class="mb-0">{{ "{:,}".format(latest_stats.views) }}</h6>
+                            <h6 class="mb-0">{{"{:,}".format(latest_stats.views) }}</h6>
                         </div>
                     </div>
                     <div class="col-6">
                         <div class="border rounded p-2 text-center">
                             <small class="text-muted">Likes</small>
-                            <h6 class="mb-0">{{ "{:,}".format(latest_stats.likes) }}</h6>
+                            <h6 class="mb-0">{{"{:,}".format(latest_stats.likes) }}</h6>
                         </div>
                     </div>
                     <div class="col-6">
                         <div class="border rounded p-2 text-center">
                             <small class="text-muted">Comments</small>
-                            <h6 class="mb-0">{{ "{:,}".format(latest_stats.comments) }}</h6>
+                            <h6 class="mb-0">{{ "{:,}".format(latest_stats.comments)}}</h6>
                         </div>
                     </div>
                     <div class="col-6">

@@ -9,17 +9,16 @@ from datetime import datetime
 # Load environment variables
 load_dotenv()
 
-# Initialize extensions
-db = SQLAlchemy()
-migrate = Migrate()
-scheduler = BackgroundScheduler()
-
 def create_app():
     app = Flask(__name__)
     app.config["SECRET_KEY"] = os.environ.get("SECRET_KEY", "default-secret-key-for-dev")
     app.config["SQLALCHEMY_DATABASE_URI"] = os.environ.get("DATABASE_URI", 'sqlite:///metrics.db')
     app.config["SQLALCHEMY_TRACK_MODIFICATIONS"] = False
     app.config["SCHEDULER_API_ENABLED"] = True
+
+  # Import extensions after creating app but before initializing
+    from extensions import db, migrate, scheduler
+
 
     # Initialize extensions with app
     db.init_app(app)
@@ -50,5 +49,6 @@ def create_app():
 if __name__ == '__main__':
     app = create_app()
     with app.app_context():
+        from extensions import db
         db.create_all()
     app.run(debug=True)
